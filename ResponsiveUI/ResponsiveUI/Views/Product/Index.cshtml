@@ -1,0 +1,88 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Knockout: Loading and Saving</title>
+    <link href="~/Content/styles.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <script src="~/scripts/jquery-1.7.1.js" type="text/javascript"></script>
+    <script src="~/scripts/knockout-2.1.0.js" type="text/javascript"></script>
+    <script src="~/scripts/jquery-ui-1.8.20.js" type="text/javascript"></script>
+    <script src="~/js/utils.js" type="text/javascript"></script>
+    <script src="~/js/ajaxservice.js" type="text/javascript"></script>
+    <script src="~/js/dataservice.shopping.js" type="text/javascript"></script>
+    <script src="~/js/index.js"></script>
+</head>
+<body>
+    <div class="page">
+        <div id="main">
+            <div>
+                <div class="saleItemsHeader">
+                    <span data-bind="text:products().length"></span>
+                    <span>Products</span>
+                </div>
+                <ul class="saleItems leftFloat" data-bind="foreach:products, beforeRemove:hideItem, afterAdd: showItem">
+                    <li class="mediumProductSquares" >
+                       <div>
+                        <div class="dialogTitleBorder">
+                            <span class="borderTitleText">Details</span>
+                        </div>
+                        <div class="leftFloat">
+                            <div>
+                                <span>Make: </span><span data-bind="text: model().brand" class="textValues"></span>
+                            </div>
+                            <div>
+                                <span>Model: </span><span data-bind="text: model().name" class="textValues"></span>
+                            </div>
+                            <div>
+                                <span>Price: </span><span data-bind="text: OrdersApp.formatCurrency(price())" class="textValues">
+                                </span>
+                            </div>
+                        </div>
+                        <button data-bind="jqButton: { }, click: $root.addToCart">Add Item</button>
+                    </div>
+                    </li>
+                </ul>
+                <div class="cartContainer leftFloat">
+                    <div class="cartItemsContainer">
+                        <div class="dialogTitleBorder">
+                            <span class="borderTitleText">Shopping Cart</span>
+                        </div>
+                        <table class="cartItems leftFloat">
+                            <thead>
+                                <tr><td class="descText">Product</td><td>Price</td><td>Qty</td><td>Total</td><td></td></tr>
+                            </thead>
+                            <tbody data-bind="{ name:'cartItems', foreach:shoppingCart, beforeRemove:hideItem, afterAdd: showItem}">
+                                <tr >
+                                    <td class="descText">
+                                        <span data-bind="text: product().shortDesc"></span>
+                                    </td>
+                                    <td>
+                                        <span data-bind="text: OrdersApp.formatCurrency(product().price())"></span>
+                                    </td>
+                                    <td>
+                                        <input data-bind="value: quantity, valueUpdate:'afterkeydown'" class="integerInput"></input>
+                                    </td>
+                                    <td>
+                                        <span data-bind="text: OrdersApp.formatCurrency(extPrice())"></span>
+                                    </td>
+                                    <td>
+                                        <button data-bind="jqButton: { }, click: $root.removeFromCart">Remove Item</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="cartSummaryContainer">
+                        <span>Total Items</span><span data-bind="text:shoppingCart().length"></span>
+                        <span>Total Price</span><span data-bind="text:OrdersApp.formatCurrency(grandTotal())"></span>
+                        <button data-bind="enable: shoppingCart().length > 0, click: $root.placeOrder">Place Order</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</body>
+</html>
